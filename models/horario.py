@@ -1,5 +1,6 @@
 from typing import List
-from models.clasehorario import ClaseHorario
+
+from .clasehorario import ClaseHorario
 
 
 class Horario: 

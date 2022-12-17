@@ -1,12 +1,14 @@
-from typing import List
-from bs4 import BeautifulSoup
-import requests 
-
-from models.materia import Materia
-from models.clasehorario import ClaseHorario
-from models.seccion import Seccion
-import time
 import os
+import time
+from typing import List
+
+import requests
+from bs4 import BeautifulSoup
+
+from .models.clasehorario import ClaseHorario
+from .models.materia import Materia
+from .models.seccion import Seccion
+
 
 class SIIAU:
     def __init__(self, centro: str, ciclo: int, count: int = 10000) :
@@ -23,8 +25,8 @@ class SIIAU:
     def oferta(self, materia: str = '', mostrarp:int = 10000)-> List[Seccion]:
       req = requests.get(self.__generar_url(self.centro, self.ciclo, materia=materia, mostrarp=mostrarp), verify=False) 
       soup = BeautifulSoup(req.content, 'html.parser')
-      secciones : List[Seccion] = self.__formatSections(soup)
-      return secciones
+      self.secciones : List[Seccion] = self.__formatSections(soup)
+      return self.secciones
 
     def __generar_url(self, centro: str, ciclo:str, materia: str = '', mostrarp:int = 10000)-> str:
       return f'http://consulta.siiau.udg.mx/wco/sspseca.consulta_oferta?ciclop={ciclo}&crsep={materia}&cup={centro}&mostrarp={mostrarp}'
@@ -55,7 +57,8 @@ class SIIAU:
         nombreMateria = element.select_one('td:nth-child(3) > a').text
         cupoSeccion = int(element.select_one('td:nth-child(7)').text)
         nrc = element.select_one('td:nth-child(1)').text
-        maestrx = element.select_one('td.tdprofesor:nth-child(2)').text
+        maestroElement = element.select_one('td.tdprofesor:nth-child(2)')
+        maestrx =  '' if maestroElement is None else maestroElement.text
 
         # Horario
         horariosElements = element.select('td:nth-child(8) > table > tr')

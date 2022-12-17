@@ -1,7 +1,8 @@
-from models.maestro import Maestro
-from models.horario import Horario
 from typing import List
-from models.materia import Materia
+
+from .horario import Horario
+from .maestro import Maestro
+from .materia import Materia
 
 
 class Seccion:

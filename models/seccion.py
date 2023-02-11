@@ -1,7 +1,6 @@
 from typing import List
 
 from .horario import Horario
-from .maestro import Maestro
 from .materia import Materia
 
 
@@ -11,7 +10,7 @@ class Seccion:
         nrc :int = None,
         materia: Materia = Materia(),
         horarios: List[Horario] = [],
-        maestros: List[Maestro] = [],
+        maestros: List[str] = [],
         cupo: int = None,
     ):
         self.nrc = nrc
